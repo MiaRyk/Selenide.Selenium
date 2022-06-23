@@ -1,4 +1,3 @@
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
@@ -6,7 +5,6 @@ import org.testng.annotations.Test;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static org.openqa.selenium.By.cssSelector;
 
 public class SelenideTest {
     @Test
