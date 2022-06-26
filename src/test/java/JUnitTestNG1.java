@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.xpath;
-public class JUnitTestNG {
+public class JUnitTestNG1 {
      @Test @BeforeEach
     public void beforeTest(){
         Configuration.browserSize = "2100x1080";
