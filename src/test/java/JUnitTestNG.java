@@ -1,10 +1,8 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
-import org.testng.annotations.Ignore;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.*;
@@ -13,12 +11,12 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.xpath;
 public class JUnitTestNG {
-     @Test @BeforeEach
-    public void beforeTest(){
+     @Test(alwaysRun = true) @BeforeMethod
+     public void beforeTest(){
         Configuration.browserSize = "2100x1080";
         open("https://www.ukrposhta.ua/ua");
     }
-    @Test @RepeatedTest(2)
+    @Test(priority = 2, timeOut = 2000)
         public void deliveryOutsideUkraine() {
             $(xpath("//*[@id='mizhnarodni1_main']")).scrollTo();
             $(xpath("//*[@id='mizhnarodni1_main']")).hover().click();
@@ -37,7 +35,7 @@ public class JUnitTestNG {
             $(cssSelector("#main app-form-submit button")).shouldBe(enabled).shouldHave(exactText("Розрахувати вартість")).click();
         }
 
-        @Test @RepeatedTest(5)
+        @Test(priority = 1, invocationCount = 3)
         public void header() {
             $(cssSelector("#bottom-line li:nth-child(1)")).shouldBe(enabled).hover();
             $(cssSelector("#services-link")).shouldBe(enabled).hover();
@@ -53,7 +51,7 @@ public class JUnitTestNG {
             $(cssSelector("#peredplata")).shouldBe(enabled).hover();
         }
 
-        @Test @DisplayName("Calculate button") @RepeatedTest(3)
+        @Test(priority = 3, invocationCount =2)
         public void calculateButton() {
             $(cssSelector("#calculate_button")).click();
             $(xpath("//button[text()='Дякую, ознайомлений (-а)']")).click();
@@ -69,19 +67,23 @@ public class JUnitTestNG {
             $(cssSelector("#main app-form-submit button")).click();
         }
 
-        @Test @Disabled
-        public void trackButton() {
+        @Test(dataProvider = "trackcode",priority = 4)
+        public void trackButton(String val) {
             $(cssSelector("#trackcode")).shouldHave(empty);
-            $(cssSelector("#trackcode")).setValue("RA123456789UA");
+            $(cssSelector("#trackcode")).setValue(val);
             $(cssSelector("#main span.default-btn-content")).click();
             $(xpath("//*[@id='trackcode']")).clear();
         }
 
-        @Test @Ignore
+        @Test(priority = 5, enabled = false)
         public void philately() {
             $(cssSelector("#philately-link")).click();
             $(cssSelector("#philately-sub-menu li:nth-child(4)")).click();
         }
+    @DataProvider
+    public Object[][] trackcode(){
+        return new Object[][]{{"RA123456789UA"},{"RA123456788UA"}};
+    }
 
     }
 
